@@ -4,7 +4,7 @@ import numpy as np
 from scipy.signal import fftconvolve
 from scipy.stats import scoreatpercentile, mode
 from collections import deque
-from _peak_detection import _ridge_detection, _peaks_position
+#from _peak_detection import _ridge_detection, _peaks_position
 
 from pylab import plot, imshow, show, figure, bar, legend, xlabel, ylabel
  
@@ -50,7 +50,7 @@ def local_extreme(data, comparator,
     locs = np.arange(0, datalen)
     results = np.ones(data.shape, dtype=bool)
     main = data.take(locs, axis=axis, mode=mode)
-    for shift in xrange(1, order + 1):
+    for shift in range(1, order + 1):
         plus = data.take(locs + shift, axis=axis, mode=mode)
         minus = data.take(locs - shift, axis=axis, mode=mode)
         results &= comparator(main, plus)
@@ -164,7 +164,7 @@ def ridges_detection(cwt2d, vec):
     cols_small_peaks = np.where(np.sum(local_max[rows_init, :], axis=0) > 0)[0]
     for col in cols_small_peaks:
         best_rows = rows_init[np.where(local_max[rows_init, col])[0]]
-        rows, cols = _ridge_detection(local_max, best_rows[0], col, n_rows, n_cols, True, True)
+        rows, cols = ridge_detection(local_max, best_rows[0], col, n_rows, n_cols, True, True)
         staightness = 1 - float(sum(abs(np.diff(cols)))) / float(len(cols))
         if len(rows) >= 2 and \
             staightness > 0.2 and  \
