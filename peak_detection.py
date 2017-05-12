@@ -128,9 +128,10 @@ def peaks_position(vec, ridges, cwt2d, wnd=2):
             cols_start = max(col - np.where(negs[row, 0:col][::-1])[0][0], 0)
             cols_end = min(col + np.where(negs[row, col:n_cols])[0][0], n_cols)
             # print col, row, cols_start, cols_end
-            inds = range(cols_start, cols_end)
-            peaks.append(inds[np.argmax(vec[inds])])
-            ridges_select.append(ridge)
+            if cols_end > cols_start:
+                inds = range(cols_start, cols_end)
+                peaks.append(inds[np.argmax(vec[inds])])
+                ridges_select.append(ridge)
         elif ridge.shape[1] > 2: # local wavelet coefficients < 0
             cols_accurate = ridge[1, 0:ridge.shape[1] / 2]
             cols_start = max(np.min(cols_accurate) - 3, 0)
